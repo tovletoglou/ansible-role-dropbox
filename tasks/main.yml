@@ -1,0 +1,54 @@
+---
+
+    - name: Import Dropbox public key
+      become: yes
+      rpm_key:
+        state: present
+        key: http://linux.dropbox.com/fedora/rpm-public-key.asc
+
+    - name: Add Dropbox repository
+      become: yes
+      yum_repository:
+        name: dropbox
+        description: Fedora $releasever - Dropbox
+        baseurl: http://linux.dropbox.com/fedora/\$releasever/
+        enabled: no
+        gpgcheck: yes
+        repo_gpgcheck: no
+        gpgkey: http://linux.dropbox.com/fedora/rpm-public-key.asc
+
+    - name: Install Dropbox
+      become: yes
+      dnf:
+        name: nautilus-dropbox
+        enablerepo: dropbox
+        state: "{{ dropbox_update }}"
+
+    - name: Create array with users
+      shell: "cut -d: -f1 /etc/passwd"
+      register: system_users
+      changed_when: false # This will never report 'changed' status. But it will report 'ok', 'unreachable' or 'failed'
+
+    - name: Create Nemo action directory
+      become: yes
+      become_user: "{{ item.name }}"
+      file:
+        path: "{{ item.home }}/.local/share/nemo/actions"
+        state: directory
+        mode: 0755
+        owner: "{{ item.name }}"
+        group: "{{ item.name }}"
+      when: "'{{ item.name }}' in system_users.stdout_lines and {{ dropbox_add_action }}"
+      with_items: "{{ dropbox_users }}"
+
+    - name: Add action "Share with Dropbox" to Nemo
+      become: yes
+      become_user: "{{ item.name }}"
+      copy:
+        src: "{{ dropbox_action_template }}"
+        dest: "{{ item.home }}/.local/share/nemo/actions/dropbox.nemo_action"
+        mode: 0664
+        owner: "{{ item.name }}"
+        group: "{{ item.name }}"
+      when: "'{{ item.name }}' in system_users.stdout_lines and {{ dropbox_add_action }}"
+      with_items: "{{ dropbox_users }}"

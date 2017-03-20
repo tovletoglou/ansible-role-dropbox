@@ -1,0 +1,15 @@
+# Custom action for Nemo File Manager for Cinnamon.
+# Adds right-click share file with Dropbox
+# Place it under: ~/.local/share/nemo/actions/dropbox.nemo_action
+# For more info: https://github.com/linuxmint/nemo/blob/master/files/usr/share/nemo/actions/sample.nemo_action
+
+[Nemo Action]
+Active=true
+Name=Share with Dropbox
+Comment=Share %F with Dropbox
+Exec=sh -c 'dropbox sharelink %F | xsel -ib'
+Icon-Name=dropbox
+Selection=s
+Extensions=any;
+Dependencies=xsel;
+Quote=double
