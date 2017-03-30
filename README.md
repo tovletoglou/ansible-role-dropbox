@@ -13,27 +13,27 @@ The role may run on other systems, but it is not tested.
 
 ## Role Variables
 
-Keep Dropbox update (present | latest | absent).
+Keep Dropbox update (`present | latest | absent`).
 
-```
+```yml
 dropbox_update: latest
 ```
 
-Add action "Share with Dropbox" to Nemo (right-click copy to clipboard shared URL) (true | false).
+Add action "Share with Dropbox" to Nemo (right-click copy to clipboard shared URL) (`true | false`).
 
-```
+```yml
 dropbox_add_action: false
 ```
 
 Nemo action template.
 
-```
+```yml
 dropbox_action_template: templates/dropbox.nemo_action.j2
 ```
 
 User list that will deploy the Nemo action "Share with Dropbox". The default will get the ansible user.
 
-```
+```yml
 dropbox_users:
   - {
       name: "{{ ansible_user_id }}",
@@ -43,7 +43,7 @@ dropbox_users:
 
 ## Example
 
-```
+```yml
 - hosts: all
   roles:
     - ansible-role-dropbox
