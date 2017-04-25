@@ -38,7 +38,7 @@
         mode: 0755
         owner: "{{ item.name }}"
         group: "{{ item.name }}"
-      when: "'{{ item.name }}' in system_users.stdout_lines and {{ dropbox_add_action }}"
+      when: item.name in system_users.stdout_lines and dropbox_add_action
       with_items: "{{ dropbox_users }}"
 
     - name: Add action "Share with Dropbox" to Nemo
@@ -50,5 +50,5 @@
         mode: 0664
         owner: "{{ item.name }}"
         group: "{{ item.name }}"
-      when: "'{{ item.name }}' in system_users.stdout_lines and {{ dropbox_add_action }}"
+      when: item.name in system_users.stdout_lines and dropbox_add_action
       with_items: "{{ dropbox_users }}"
