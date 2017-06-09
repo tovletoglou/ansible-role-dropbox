@@ -44,11 +44,12 @@
     - name: Add action "Share with Dropbox" to Nemo
       become: yes
       become_user: "{{ item.name }}"
-      copy:
+      template:
         src: "{{ dropbox_action_template }}"
         dest: "{{ item.home }}/.local/share/nemo/actions/dropbox.nemo_action"
         mode: 0664
         owner: "{{ item.name }}"
         group: "{{ item.name }}"
+        backup: yes
       when: item.name in system_users.stdout_lines and dropbox_add_action
       with_items: "{{ dropbox_users }}"
