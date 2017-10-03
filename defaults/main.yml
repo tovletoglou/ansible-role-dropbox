@@ -1,5 +1,11 @@
 ---
 
+# Dropbox RPM public key
+dropbox_rmp_key: http://linux.dropbox.com/fedora/rpm-public-key.asc
+
+# Dropbox repository
+dropbox_repository_url: "http://linux.dropbox.com/fedora/\\$releasever"
+
 # Keep Dropbox update (present | latest | absent).
 dropbox_update: latest
 
